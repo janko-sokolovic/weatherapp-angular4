@@ -1,6 +1,6 @@
 import { Weather } from './weather';
 
-export const WEATHER: Weather = {
+export const WEATHER = {
     coord: {
         lon: 20.47,
         lat: 44.82

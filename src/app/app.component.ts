@@ -14,6 +14,6 @@ export class AppComponent implements OnInit {
   constructor(private weatherService: WeatherService) {
   }
   ngOnInit(): void {
-    this.weatherService.getWeather().then(weather => this.weather = weather);
+    this.weatherService.getWeatherSlowly().then(weather => this.weather = weather);
   }
 }
