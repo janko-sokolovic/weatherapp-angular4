@@ -10,10 +10,10 @@ import { OnInit } from '@angular/core';
   providers: [WeatherService]
 })
 export class AppComponent implements OnInit {
-  weather: Weather;
+  weather: Promise<Weather>;
   constructor(private weatherService: WeatherService) {
   }
   ngOnInit(): void {
-    this.weatherService.getWeather().then(weather => this.weather = weather);
+    this.weather = this.weatherService.getWeather().then(weather =>  weather);
   }
 }

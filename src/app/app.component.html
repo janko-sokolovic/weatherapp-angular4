@@ -9,9 +9,7 @@
 <ul>
  <li>
    <div>
-     <div *ngIf="weather">
-     {{weather.temp}}
-     </div>
+     {{(weather | async)?.temp }}
    </div>
   </li>
 </ul>
