@@ -1,7 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { WeatherService } from './weather.service';
 import { Weather } from './weather';
-import { OnInit } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
+import { IntervalObservable } from 'rxjs/observable/IntervalObservable';
+
+import 'rxjs/add/operator/expand';
+import 'rxjs/observable/interval';
 
 @Component({
   selector: 'app-root',
@@ -10,10 +14,18 @@ import { OnInit } from '@angular/core';
   providers: [WeatherService]
 })
 export class AppComponent implements OnInit {
-  weather: Promise<Weather>;
-  constructor(private weatherService: WeatherService) {
+  weather: Observable<Weather>;
+
+  errorMessage: string;
+
+  constructor(private weatherService: WeatherService) {}
+
+  ngOnInit() {
+    this.weatherService.getWeather()
+    .subscribe( (weather: Weather) => {
+       this.weather = Observable.of(weather);
+    },
+    error => this.errorMessage = <any>error);
   }
-  ngOnInit(): void {
-    this.weather = this.weatherService.getWeather().then(weather =>  weather);
-  }
+
 }

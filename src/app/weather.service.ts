@@ -1,33 +1,29 @@
 import { Injectable } from '@angular/core';
 import { Weather } from './weather';
-import { Headers, Http } from '@angular/http';
+import { Headers, Http, Response } from '@angular/http';
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/Rx';
 
-import 'rxjs/add/operator/toPromise';
+import 'rxjs/add/operator/mergeMap';
 
 @Injectable()
 export class WeatherService {
 
-    private static  WEATHER_URL =
+    private static WEATHER_URL =
     'http://api.openweathermap.org/data/2.5/weather?q=Belgrade,RS&appid=0fd295b33e8eaebb73738dfcfe6109a5&units=metric';
 
-    constructor(private http: Http) {
+    constructor(private http: Http) {}
+
+    getWeather(): Observable<Weather> {
+        return Observable.interval(5000)
+            .startWith(0)
+            .switchMap(() => this.http.get(WeatherService.WEATHER_URL)
+                .map((response: Response) => new Weather(response.json().main.temp))
+                .catch(this.handleError)
+            );
     }
 
-    getWeather(): Promise<Weather> {
-        return this.http.get(WeatherService.WEATHER_URL)
-        .toPromise()
-        .then((response: any ) =>  {
-            const data = response.json();
-            const temp =  data.main.temp;
-            const minTemp = data.main.temp_min;
-            const maxTemp = data.main.temp_max;
-
-            return new Weather(temp, minTemp, maxTemp);
-        })
-        .catch(this.handleError);
-    }
-
-    private handleError(error: any): Promise<any>  {
+    private handleError(error: any): Promise<any> {
         console.error('An error occurred', error); // for demo purposes only
         return Promise.reject(error.message || error);
     }
