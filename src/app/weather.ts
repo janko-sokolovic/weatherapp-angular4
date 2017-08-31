@@ -1,5 +1,5 @@
 export class Weather {
-    constructor(public temp: number) {
+    constructor(public temp: number, public conditions: string, public isDay: boolean) {
 
     }
 }
