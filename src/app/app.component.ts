@@ -4,13 +4,10 @@ import { Weather } from './weather';
 import { Observable } from 'rxjs/Observable';
 import { IntervalObservable } from 'rxjs/observable/IntervalObservable';
 
-import 'rxjs/add/operator/expand';
-import 'rxjs/observable/interval';
-
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css'],
+  styleUrls: ['./app.component.css', '../css/weather-icons.css' ],
   providers: [WeatherService]
 })
 export class AppComponent implements OnInit {
