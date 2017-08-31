@@ -5,9 +5,10 @@ import { WeatherCondition } from './weather-condition';
 
 
 /**
- * This service is responsible to map the id from response to actual weather enum.
+ * Maps the id from api response to weather condition enum.
  * Numbers are hardcoded regarding the ids from https://openweathermap.org/weather-conditions
  * Example:  id 800 = "clear sky"
+ * UGLY? I know. Feel free to fork-out and make it nicer.
  */
 @Injectable()
 export class WeatherConditionsMapperService {

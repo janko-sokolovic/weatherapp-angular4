@@ -2,9 +2,12 @@ import { Injectable } from '@angular/core';
 import { Weather } from './weather';
 import { Headers, Http, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
+import { WeatherConditionsMapperService } from './weather-conditions-mapper.service';
+import { WeatherIconMapperService } from './weather-icon-mapper.service';
 import 'rxjs/Rx';
 
 import 'rxjs/add/operator/mergeMap';
+
 
 @Injectable()
 export class WeatherService {
@@ -12,7 +15,7 @@ export class WeatherService {
     private static WEATHER_URL =
     'http://api.openweathermap.org/data/2.5/weather?q=Belgrade,RS&appid=0fd295b33e8eaebb73738dfcfe6109a5&units=metric';
 
-    constructor(private http: Http) { }
+    constructor(private http: Http, private conditionMapper: WeatherConditionsMapperService, iconMapper: WeatherIconMapperService) { }
 
     private static isDayNow(data): boolean {
         const currentTimeUnix = data.dt;
@@ -34,7 +37,7 @@ export class WeatherService {
     private toWeather(response: Response): Weather {
         const data = response.json();
 
-        return new Weather(data.main.temp, data.weather[0].id, WeatherService.isDayNow(data));
+        return new Weather(data.main.temp, data.weather[0].id, WeatherService.isDayNow(data), 'wi-day-sunny');
     }
 
     private handleError(error: any): Promise<any> {
