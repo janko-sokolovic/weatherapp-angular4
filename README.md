@@ -1,4 +1,4 @@
-#Simple weather gadget app written in Angular 4
+# Simple weather gadget app written in Angular 4
 
 Start the app:
 
