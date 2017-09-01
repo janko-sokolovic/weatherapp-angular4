@@ -15,7 +15,10 @@ export class WeatherService {
     private static WEATHER_URL =
     'http://api.openweathermap.org/data/2.5/weather?q=Belgrade,RS&appid=0fd295b33e8eaebb73738dfcfe6109a5&units=metric';
 
-    constructor(private http: Http, private conditionMapper: WeatherConditionsMapperService, iconMapper: WeatherIconMapperService) { }
+    constructor(private http: Http,
+        private conditionMapper: WeatherConditionsMapperService,
+        private iconMapper: WeatherIconMapperService) {
+        }
 
     private static isDayNow(data): boolean {
         const currentTimeUnix = data.dt;
@@ -29,15 +32,18 @@ export class WeatherService {
         return Observable.interval(5000)
             .startWith(0)
             .switchMap(() => this.http.get(WeatherService.WEATHER_URL)
-                .map(this.toWeather)
+                .map(response => this.toWeather(response)) // needs to be  lambda, reference will fail.
                 .catch(this.handleError)
             );
     }
 
     private toWeather(response: Response): Weather {
+        console.log(this.conditionMapper, this.iconMapper);
         const data = response.json();
+        const isDay = WeatherService.isDayNow(data);
+        const conditionId = this.conditionMapper.mapFromId(parseInt(data.weather[0].id, 10));
 
-        return new Weather(data.main.temp, data.weather[0].id, WeatherService.isDayNow(data), 'wi-day-sunny');
+        return new Weather(data.main.temp,  conditionId, isDay, this.iconMapper.toClassName(conditionId, isDay));
     }
 
     private handleError(error: any): Promise<any> {

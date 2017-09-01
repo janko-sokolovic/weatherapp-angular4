@@ -13,9 +13,10 @@ import { WeatherCondition } from './weather-condition';
 @Injectable()
 export class WeatherConditionsMapperService {
 
-    constructor() { }
+    constructor() {
+    }
 
-    static mapFromId(id: number): WeatherCondition {
+    mapFromId(id: number): WeatherCondition {
 
         if (id > 999 || id < 200) {
             throw Error('Condition id is invalid.');
