@@ -24,7 +24,7 @@ export class AppComponent implements OnInit {
       .subscribe((weather: Weather) => {
         this.weather = Observable.of(weather);
       },
-      error => this.errorMessage = <any>error);
+      error => this.weather = this.weather);
   }
 
 }
